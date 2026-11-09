@@ -3606,7 +3606,10 @@ def table_text(document)
 end
 
 def fixtures(dir)
-  hits = filter(is_dir?, fairu::on_blue_path("toriyose/danpen/fixtures/#{dir}"))
+  hits = filter(
+    is_dir?,
+    fairu::on_blue_path("shiryou/toriyose/danpen/fixtures/#{dir}")
+  )
   if is_empty(hits)
     raise(:no_fixture, dir)
   end

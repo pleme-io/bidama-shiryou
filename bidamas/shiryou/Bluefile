@@ -1,0 +1,30 @@
+package("shiryou", "0.1.2", :public)
+needs("deeta", "^0.1.0")
+needs("eigyou", "^0.1.0")
+needs("fairu", "^0.1.0")
+needs("gamen", "^0.1.0")
+needs("gurafu", "^0.1.0")
+needs("hizuke", "^0.1.0")
+needs("isshou", "^0.1.0")
+needs("jisho", "^0.1.0")
+needs("kansuu", "^0.1.0")
+needs("kiwari", "^0.1.0")
+needs("kousei", "^0.1.0")
+needs("kyohi", "^0.1.0")
+needs("moji", "^0.1.0")
+needs("ran", "^0.1.0")
+needs("retsu", "^0.1.0")
+needs("shomei", "^0.1.0")
+needs("tesuto", "^0.1.0")
+legacy_packages(
+  "0.1.2",
+  [
+    ["toriyose", "shiryou/toriyose"],
+    ["danpen", "shiryou/toriyose/danpen"],
+    ["kyasshu", "shiryou/toriyose/kyasshu"],
+    ["outou", "shiryou/toriyose/outou"],
+    ["khipu", "shiryou/khipu"],
+    ["shuusei", "shiryou/shuusei"],
+    ["happa", "shiryou/happa"]
+  ]
+)

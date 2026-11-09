@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "bluefile_b3": "b3:533ef04d2260311dfb5694f5c78e10bb7f8f8948d2268596b8ca1286d2a602fe",
+  "manifest": {
+    "schema": 1,
+    "name": "bidama-shiryou",
+    "version": "0.1.0",
+    "needs": {},
+    "when": "anytime",
+    "sources": {},
+    "packages": [
+      "bidamas"
+    ],
+    "runs": {},
+    "tools": [],
+    "checks": {},
+    "apps": {},
+    "catalog": null
+  },
+  "sources": {}
+}

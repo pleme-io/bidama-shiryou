@@ -21,8 +21,8 @@ use("kyohi", [:refusal])
 use("moji", [:checked])
 use("ran")
 use("retsu", %i[find_first first is_empty push size])
+use("shiryou/toriyose/danpen")
 use("tesuto", [:raises?])
-use("toriyose/danpen")
 
 def key_format()
   "kyasshu-keys/1"
@@ -81,14 +81,17 @@ end
 schema: the entity key table a GraphQL schema implies.
 """
 def schema(subject)
-  table_of(toriyose::danpen::schema_of(subject))
+  table_of(shiryou::toriyose::danpen::schema_of(subject))
 end
 
+@doc """
+context: What this process inherits and passes to every process it spawns: {clock: :virtual or :real, deadline: the node time or nil}.
+"""
 def context(schema)
   if table?(schema)
     {table: schema, types: nil}
   else
-    s = toriyose::danpen::schema_of(schema)
+    s = shiryou::toriyose::danpen::schema_of(schema)
     {table: table_of(s), types: s}
   end
 end
@@ -122,12 +125,12 @@ def field_type(ctx, parent, name)
   f = if s.nil? or parent.nil?
     nil
   else
-    toriyose::danpen::field_def(s, parent, name, false)
+    shiryou::toriyose::danpen::field_def(s, parent, name, false)
   end
   if f.nil?
     nil
   else
-    toriyose::danpen::base_name(f[:type])
+    shiryou::toriyose::danpen::base_name(f[:type])
   end
 end
 
@@ -301,7 +304,7 @@ def fetched(v, o)
   if null_at?(o)
     nil
   else
-    toriyose::danpen::select_into(
+    shiryou::toriyose::danpen::select_into(
       start_value(v, o[:at]),
       selections_of(o[:fragment]),
       hooks(v)
@@ -676,7 +679,7 @@ def persisted_body(doc, variables)
     "extensions" => {
       "persistedQuery" => {
         "version" => 1,
-        "sha256Hash" => toriyose::danpen::hash(doc)
+        "sha256Hash" => shiryou::toriyose::danpen::hash(doc)
       }
     },
     "variables" => variables or {}
@@ -697,7 +700,7 @@ def request(target, input, opts?)
   if i[:operation].nil?
     raise(:bad_option, "request: operation: is the document to run")
   end
-  doc = toriyose::danpen::as_document(i[:operation])
+  doc = shiryou::toriyose::danpen::as_document(i[:operation])
   r = eigyou::tsuushin::request(
     "POST",
     target,
@@ -721,8 +724,8 @@ def request(target, input, opts?)
   if any?((e) -> e["message"] == "PersistedQueryNotFound", errors)
     raise(
       :not_persisted,
-      "request: #{target} holds no operation #{toriyose::danpen::hash(doc)}, and no query text is sent",
-      {data: toriyose::danpen::hash(doc)}
+      "request: #{target} holds no operation #{shiryou::toriyose::danpen::hash(doc)}, and no query text is sent",
+      {data: shiryou::toriyose::danpen::hash(doc)}
     )
   end
   if reply["data"].nil? and not is_empty(errors)
@@ -749,18 +752,21 @@ def sdl()
 end
 
 def user_card()
-  toriyose::danpen::fragment(:user_card, {on: "User", fields: %i[id name]})
+  shiryou::toriyose::danpen::fragment(
+    :user_card,
+    {on: "User", fields: %i[id name]}
+  )
 end
 
 def comment_item()
-  toriyose::danpen::fragment(
+  shiryou::toriyose::danpen::fragment(
     :comment_item,
     {on: "Comment", fields: [:id, :body, {author: ["...user_card"]}]}
   )
 end
 
 def post_page()
-  toriyose::danpen::fragment(
+  shiryou::toriyose::danpen::fragment(
     :post_page,
     {
       on: "Post",
@@ -776,14 +782,14 @@ end
 
 def page_query()
   text = "query Post($id: ID!) { post(id: $id) { ...post_page } }"
-  toriyose::danpen::compose(
-    toriyose::danpen::parse(text),
+  shiryou::toriyose::danpen::compose(
+    shiryou::toriyose::danpen::parse(text),
     [post_page, comment_item, user_card]
   )
 end
 
 def operation_of(doc)
-  first(toriyose::danpen::definitions_of_kind(doc, :operation))
+  first(shiryou::toriyose::danpen::definitions_of_kind(doc, :operation))
 end
 
 def ada()
@@ -889,7 +895,7 @@ end
 
 def posts_query()
   text = "{ posts { id title author { id name } comments { id body author { id name } } } }"
-  operation_of(toriyose::danpen::parse(text))
+  operation_of(shiryou::toriyose::danpen::parse(text))
 end
 
 def server_text()
@@ -1049,14 +1055,14 @@ test "schema keys every object type with an id, and the generated table is kensa
     {"Comment" => ["id"], "Post" => ["id"], "User" => ["id"]}
   assert t[:separator] == ":"
   assert t[:format] == "kyasshu-keys/1"
-  assert schema(toriyose::danpen::parse(sdl)) == t
+  assert schema(shiryou::toriyose::danpen::parse(sdl)) == t
   kensa = find_first(
     (f) -> ends_with?(first(f), "/kensa.graphql"),
-    toriyose::danpen::fixtures("schema")
+    shiryou::toriyose::danpen::fixtures("schema")
   )
   generated = find_first(
     is_file?,
-    fairu::on_blue_path("toriyose/kyasshu/keys/kensa.json")
+    fairu::on_blue_path("shiryou/toriyose/kyasshu/keys/kensa.json")
   )
   assert read_file(generated) ==
     unlines([json_stringify(schema(second(kensa)))])
@@ -1124,7 +1130,7 @@ test "normalize then read gives back what the query selects, for any response"
     fn(seed)
       r = drawn_response(seed)
       unref(read(normalize(r, sdl), {fragment: q})) ==
-        toriyose::danpen::select(r["data"], q)
+        shiryou::toriyose::danpen::select(r["data"], q)
     end,
     range(0, 120)
   )
@@ -1140,7 +1146,7 @@ end
 test "a read misses when the store lacks an entity or a field"
   s = normalize(response, sdl)
   assert read(s, {fragment: user_card, at: "User:nobody"}).nil?
-  wide = toriyose::danpen::fragment(
+  wide = shiryou::toriyose::danpen::fragment(
     :wide,
     {on: "User", fields: %i[id name email]}
   )
@@ -1339,7 +1345,7 @@ test "request posts the persisted hash and no query text through tsuushin"
   )
   sent = r["sent"]
   assert sent["extensions"]["persistedQuery"]["sha256Hash"] ==
-    toriyose::danpen::hash(page_query)
+    shiryou::toriyose::danpen::hash(page_query)
   assert sent["extensions"]["persistedQuery"]["version"] == 1
   assert sent["query"].nil?
   assert sent["operationName"] == "Post"
@@ -1402,7 +1408,7 @@ end
 
 def persisted?(body)
   body["extensions"]["persistedQuery"]["sha256Hash"] ==
-    toriyose::danpen::hash(page_query) and body["query"].nil?
+    shiryou::toriyose::danpen::hash(page_query) and body["query"].nil?
 end
 
 test "an SSR page with nested fragments renders from one request"

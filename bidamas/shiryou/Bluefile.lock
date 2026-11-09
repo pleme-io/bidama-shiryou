@@ -1,15 +1,16 @@
 {
   "schema": 1,
-  "bluefile_b3": "b3:9af0c35b9b806def329c72da6634a7dbd5daa73b6756cd09a8fab48196ecd51f",
+  "bluefile_b3": "b3:460193d9f772c360b5b2ac2857e2ac37b37753acdb565a600d01a035908d761c",
   "manifest": {
     "schema": 1,
-    "name": "toriyose",
+    "name": "shiryou",
     "version": "0.1.2",
     "needs": {
       "deeta": "^0.1.0",
       "eigyou": "^0.1.0",
       "fairu": "^0.1.0",
       "gamen": "^0.1.0",
+      "gurafu": "^0.1.0",
       "hizuke": "^0.1.0",
       "isshou": "^0.1.0",
       "jisho": "^0.1.0",
@@ -31,18 +32,35 @@
     "checks": {},
     "apps": {},
     "catalog": null,
+    "visibility": "public",
     "legacy_packages": {
       "danpen": {
         "since": "0.1.2",
-        "to": "toriyose/danpen"
+        "to": "shiryou/toriyose/danpen"
+      },
+      "happa": {
+        "since": "0.1.2",
+        "to": "shiryou/happa"
+      },
+      "khipu": {
+        "since": "0.1.2",
+        "to": "shiryou/khipu"
       },
       "kyasshu": {
         "since": "0.1.2",
-        "to": "toriyose/kyasshu"
+        "to": "shiryou/toriyose/kyasshu"
       },
       "outou": {
         "since": "0.1.2",
-        "to": "toriyose/outou"
+        "to": "shiryou/toriyose/outou"
+      },
+      "shuusei": {
+        "since": "0.1.2",
+        "to": "shiryou/shuusei"
+      },
+      "toriyose": {
+        "since": "0.1.2",
+        "to": "shiryou/toriyose"
       }
     }
   },

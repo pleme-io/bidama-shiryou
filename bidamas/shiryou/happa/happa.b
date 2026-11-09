@@ -25,6 +25,7 @@ use("kousei", %i[entry field off one_of required text])
 use("kyohi", %i[raised refusal standing])
 use("moji", %i[checked text_of])
 use("retsu", %i[first is_empty last size])
+use("tesuto")
 
 legacy_names("0.1.1", [["text_of", "moji::text_of", ""]])
 
@@ -2170,23 +2171,36 @@ test "each setting is judged alone: a bad one keeps its default, an off one its 
   ) == "nats://n:4222"
 end
 
-test "differential: every word equals its pangea-leaf source on the 1,024-repository address set"
-  load = fn(file)
-    roots = append(
-      blue::split(getenv("BLUE_PATH", ""), ":"),
-      [path_join(cwd, "bidamas"), cwd]
-    )
-    json_read(
-      read_file(
-        first(
-          filter(
-            is_file?,
-            map((r) -> path_join(r, "happa/differential/#{file}"), roots)
-          )
-        )
-      )
-    )
+@doc """
+differential_files: every copy of a differential fixture file on the load path. The fixture is a measured production address set, so it lives in a private distribution, and a public checkout has none.
+
+    differential_files("no-such-file.json") #=> []
+"""
+def differential_files(file)
+  roots = append(
+    blue::split(getenv("BLUE_PATH", ""), ":"),
+    [path_join(cwd, "bidamas"), cwd]
+  )
+  filter(
+    is_file?,
+    map((r) -> path_join(r, "shiryou/happa/differential/#{file}"), roots)
+  )
+end
+
+@doc """
+differential_absence: why the differential tests cannot run here, or nil when the fixture is on the load path.
+
+    differential_absence == nil or contains?(differential_absence, "private") #=> true
+"""
+def differential_absence()
+  if is_empty(differential_files("inputs.json"))
+    "the differential fixture is a measured production address set kept in a private distribution; put that distribution's root on BLUE_PATH to run this test"
   end
+end
+
+test "differential: every word equals its pangea-leaf source on the 1,024-repository address set"
+  tesuto::skip_for(differential_absence)
+  load = (file) -> json_read(read_file(first(differential_files(file))))
   input = load("inputs.json")
   want = load("oracle.json")
   addrs = input["addresses"]
@@ -2231,22 +2245,8 @@ test "differential: every word equals its pangea-leaf source on the 1,024-reposi
 end
 
 test "differential: change, schedule and verdict words equal their pangea-leaf sources"
-  load = fn(file)
-    roots = append(
-      blue::split(getenv("BLUE_PATH", ""), ":"),
-      [path_join(cwd, "bidamas"), cwd]
-    )
-    json_read(
-      read_file(
-        first(
-          filter(
-            is_file?,
-            map((r) -> path_join(r, "happa/differential/#{file}"), roots)
-          )
-        )
-      )
-    )
-  end
+  tesuto::skip_for(differential_absence)
+  load = (file) -> json_read(read_file(first(differential_files(file))))
   input = load("inputs.json")
   want = load("oracle.json")
   assert map(
