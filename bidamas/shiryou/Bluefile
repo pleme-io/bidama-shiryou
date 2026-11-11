@@ -23,7 +23,6 @@ legacy_packages(
     ["danpen", "shiryou/toriyose/danpen"],
     ["kyasshu", "shiryou/toriyose/kyasshu"],
     ["outou", "shiryou/toriyose/outou"],
-    ["khipu", "shiryou/khipu"],
     ["shuusei", "shiryou/shuusei"],
     ["happa", "shiryou/happa"]
   ]

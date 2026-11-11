@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "bluefile_b3": "b3:460193d9f772c360b5b2ac2857e2ac37b37753acdb565a600d01a035908d761c",
+  "bluefile_b3": "b3:de894d7962c7ea4521d62a6870341d17434e6c8129c60850c3a072b9d1758daf",
   "manifest": {
     "schema": 1,
     "name": "shiryou",
@@ -41,10 +41,6 @@
       "happa": {
         "since": "0.1.2",
         "to": "shiryou/happa"
-      },
-      "khipu": {
-        "since": "0.1.2",
-        "to": "shiryou/khipu"
       },
       "kyasshu": {
         "since": "0.1.2",
