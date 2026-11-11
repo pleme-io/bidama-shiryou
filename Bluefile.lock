@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "bluefile_b3": "b3:533ef04d2260311dfb5694f5c78e10bb7f8f8948d2268596b8ca1286d2a602fe",
+  "bluefile_b3": "b3:57234a47dfa58d284455a2d0125486ab8b801cad6600bf8e614d6abdfe53cf3e",
   "manifest": {
     "schema": 1,
     "name": "bidama-shiryou",
@@ -13,9 +13,26 @@
     ],
     "runs": {},
     "tools": [],
-    "checks": {},
+    "checks": {
+      "heni-mutations": {
+        "file": "gen/heni-gate.b",
+        "inputs": [
+          "bidamas",
+          "heni"
+        ]
+      }
+    },
     "apps": {},
-    "catalog": null
+    "catalog": null,
+    "generated": {
+      "kyasshu-keys": {
+        "output": "bidamas/shiryou/toriyose/kyasshu/keys/kensa.json",
+        "program": "gen/kyasshu-keys.b",
+        "inputs": [
+          "bidamas/shiryou/toriyose/danpen/fixtures/schema/kensa.graphql"
+        ]
+      }
+    }
   },
   "sources": {}
 }

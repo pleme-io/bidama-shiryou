@@ -1,0 +1,11 @@
+# receipt: happa holds 17/23 here; its six other mutations are caught only by the differential tests, whose production fixture stays private and out of this repository
+heni-caught: shiryou/happa 17
+heni-total: shiryou/happa 23
+heni-caught: shiryou/shuusei 5
+heni-total: shiryou/shuusei 5
+heni-caught: shiryou/toriyose/danpen 20
+heni-total: shiryou/toriyose/danpen 20
+heni-caught: shiryou/toriyose/kyasshu 15
+heni-total: shiryou/toriyose/kyasshu 15
+heni-caught: shiryou/toriyose/outou 16
+heni-total: shiryou/toriyose/outou 16

@@ -1,3 +1,12 @@
 package("bidama-shiryou", "0.1.0")
 
 packages("bidamas")
+
+generate(
+  "kyasshu-keys",
+  "bidamas/shiryou/toriyose/kyasshu/keys/kensa.json",
+  "gen/kyasshu-keys.b",
+  ["bidamas/shiryou/toriyose/danpen/fixtures/schema/kensa.graphql"]
+)
+
+check("heni-mutations", "gen/heni-gate.b", %w[bidamas heni])
